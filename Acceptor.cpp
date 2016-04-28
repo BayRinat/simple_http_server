@@ -28,13 +28,9 @@ namespace http {
             return m_acceptor;
         }
 
-        const std::string& CAcceptor::GetAddress() const {
-            return m_address;
-        }
-
-        const std::string& CAcceptor::GetPort() const {
-            return m_port;
-        }
-
     } // namespace server
 } // namespace http
+
+
+
+

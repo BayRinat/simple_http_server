@@ -10,7 +10,6 @@ set(HEADERS
         ConnectionManager.h
         HttpServer.h
         Request.h
-        Response.h
         ResponseMessages.h)
 
 # sources
@@ -20,16 +19,15 @@ set(SOURCES
         Connection.cpp
         ConnectionManager.cpp
         HttpServer.cpp
-        Request.cpp
-        Response.cpp)
+        Request.cpp)
 
 include_directories(/home/rinat/boost_1_60_0)
 
 link_directories(/home/rinat/boost_1_60_0/stage/lib)
 link_directories(/usr/lib/x86_64-linux-gnu)
-link_libraries(boost_thread)
-link_libraries(boost_system)
 link_libraries(boost_filesystem)
+link_libraries(boost_system)
+link_libraries(boost_thread)
 link_libraries(pthread)
 
 add_executable(http_server ${HEADERS} ${SOURCES})

@@ -8,8 +8,8 @@ Author:
 
 --*/
 
-#include <boost/bind.hpp>
 #include "ConnectionManager.h"
+#include <boost/bind.hpp>
 
 namespace http {
     namespace server {
@@ -24,7 +24,7 @@ namespace http {
             ptr->Stop();
         }
 
-        void CConnectionManager::Stop_all() {
+        void CConnectionManager::StopAll() {
             std::for_each(m_connections.begin(), m_connections.end(),
                           boost::bind(&CConnection::Stop, _1));
             m_connections.clear();
@@ -32,3 +32,5 @@ namespace http {
 
     } // namespace server
 } // namespace http
+
+

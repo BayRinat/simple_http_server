@@ -11,9 +11,8 @@ Author:
 #ifndef HTTP_SERVER_CONNECTIONMANAGER_H
 #define HTTP_SERVER_CONNECTIONMANAGER_H
 
-
-#include <boost/noncopyable.hpp>
 #include <set>
+#include <boost/noncopyable.hpp>
 #include "Connection.h"
 
 namespace http {
@@ -25,7 +24,7 @@ namespace http {
         public:
             void Start(connection_ptr ptr);
             void Stop(connection_ptr ptr);
-            void Stop_all();
+            void StopAll();
 
         private:
             std::set<connection_ptr> m_connections;

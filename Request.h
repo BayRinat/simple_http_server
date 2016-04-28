@@ -11,8 +11,6 @@ Author:
 #ifndef HTTP_SERVER_REQUEST_H
 #define HTTP_SERVER_REQUEST_H
 
-#include <boost/asio/streambuf.hpp>
-
 namespace http {
     namespace server {
 
@@ -25,16 +23,15 @@ namespace http {
         class CRequest {
 
         public:
+            bool EndRequest(const char* buffer, size_t size);
             bool ParseStartLine();
-            boost::asio::streambuf& GetBuffer();
             const std::string& GetUri() const;
 
         private:
             static const std::string GET_METHOD;
-            static constexpr const char LF = '\n';
-            static constexpr const char SP = ' ';
+            static const std::string END_REQUEST;
 
-            boost::asio::streambuf m_buffer;
+            std::string m_request;
             SStartLine m_startline;
         };
 

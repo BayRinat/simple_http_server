@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
             server.Run();
         }
         else
-            std::cerr << "Usage: http_server addreess port folder" << std::endl;
+            std::cerr << "Usage: http_server address port folder" << std::endl;
 
     }
     catch (std::exception& e) {

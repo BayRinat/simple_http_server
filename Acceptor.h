@@ -22,8 +22,6 @@ namespace http {
             explicit CAcceptor(boost::asio::io_service& service, const std::string& address, const std::string& port);
 
             boost::asio::ip::tcp::acceptor& GetAcceptor();
-            const std::string& GetAddress() const;
-            const std::string& GetPort() const;
 
         private:
             boost::asio::ip::tcp::acceptor m_acceptor;

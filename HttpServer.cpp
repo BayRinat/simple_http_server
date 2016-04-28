@@ -31,9 +31,12 @@ namespace http {
             m_service.stop();
         }
 
-
         void CHttpServer::Run() {
-            m_service.run();
+            for(auto i = 0; i < THREADS_COUNT; ++i) {
+                m_threads_group.create_thread(boost::bind(
+                        &boost::asio::io_service::run, &m_service));
+            }
+            m_threads_group.join_all();
         }
 
         void CHttpServer::OnAcceptedHandler(const boost::system::error_code& ec) {
@@ -43,9 +46,22 @@ namespace http {
             }
             else {
                 m_acceptor.GetAcceptor().close();
-                m_connections_array.Stop_all();
+                m_connections_array.StopAll();
             }
         }
 
     } // namespace server
 } // namespace http
+
+
+
+
+
+
+
+
+
+
+
+
+

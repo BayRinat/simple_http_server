@@ -8,55 +8,38 @@ Author:
 
 --*/
 
-#include "Request.h"
 #include <boost/algorithm/string.hpp>
+#include "Request.h"
 
 namespace http {
     namespace server {
 
         const std::string CRequest::GET_METHOD = "GET";
+        const std::string CRequest::END_REQUEST = "\r\n\r\n";
+
+        bool CRequest::EndRequest(const char* buffer, size_t size) {
+            m_request.append(buffer, size);
+            size_t found = m_request.find(END_REQUEST);
+            if(found != std::string::npos)
+                return true;
+
+            return false;
+        }
 
         bool CRequest::ParseStartLine() {
-            auto size = m_buffer.size();
-            if (size == 0)
+            std::vector<std::string> words;
+            boost::split(words, m_request, boost::is_any_of("\r\n "));
+            if(words.size() < 3)
                 return false;
 
-            auto data = boost::asio::buffer_cast<const char *>(m_buffer.data());
+            m_startline.method = words[0];
+            m_startline.uri = words[1];
+            m_startline.protocol = words[2];
 
-            size_t spaces[2];
-            size_t space_count{0};
-
-            // find spaces
-            for (auto i = 0; i < size; ++i) {
-                if (data[i] == SP) {
-                    spaces[space_count] = i;
-                    ++space_count;
-                }
-                if(space_count == 2)
-                    break;
-            }
-            // continue parsing data only in case spaces existence
-            if (space_count != 0) {
-                m_startline.method.assign(data, spaces[0]);
-                m_startline.uri.assign(data + spaces[0] + 1, spaces[1] > 0 ? spaces[1] - spaces[0] - 1 : 0);
-                // do not return '\r' and '\n' symbols
-                size_t offset = 1;
-                while (offset <= size &&
-                       (data[size - offset] == LF)) {
-                    ++offset;
-                }
-                m_startline.protocol.assign(data + spaces[1] + 1, size - spaces[1] - offset);
-            }
-
-            // check
-            if (m_startline.method != GET_METHOD || m_startline.uri.size() == 0 || m_startline.protocol.size() == 0)
+            if (m_startline.method != GET_METHOD)
                 return false;
 
             return true;
-        }
-
-        boost::asio::streambuf& CRequest::GetBuffer() {
-            return m_buffer;
         }
 
         const std::string& CRequest::GetUri() const {
@@ -65,3 +48,7 @@ namespace http {
 
     } // namespace server
 } // namespace http
+
+
+
+

@@ -13,6 +13,8 @@ Author:
 
 #include <cstdio>
 #include <string>
+#include <iostream>
+#include <fstream>
 #include <boost/asio/ip/tcp.hpp>
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
@@ -40,21 +42,16 @@ namespace http {
             boost::asio::ip::tcp::socket& GetSocket();
 
         private:
-            void OnReadHandler(const boost::system::error_code& ec,
-                               std::size_t bytes_transferred);
-
             void AsyncWrite(const char* data, size_t size);
             void AsyncWrite(const std::string& message);
 
-            void OnWriteHandler(const boost::system::error_code& ec,
-                                std::size_t bytes_transferred);
-
-            void ReadFile(const std::string &path);
+            void OpenFile(const std::string &path);
 
             static constexpr size_t READ_BUFFER_SIZE = 1024;
-            static constexpr size_t WRITE_BUFFER_SIZE = 1024;
+            static constexpr size_t WRITE_BUFFER_SIZE = 10;
 
             char m_read_buffer[READ_BUFFER_SIZE];
+            char m_write_buffer[WRITE_BUFFER_SIZE];
 
             boost::asio::io_service::strand m_strand;
             boost::asio::ip::tcp::socket m_socket;
@@ -63,6 +60,7 @@ namespace http {
             const std::string& m_folder;
 
             CRequest m_request;
+            std::ifstream m_file_stream;
         };
 
         using connection_ptr = boost::shared_ptr<CConnection>;

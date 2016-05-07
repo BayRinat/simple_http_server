@@ -48,7 +48,7 @@ namespace http {
             void OpenFile(const std::string &path);
 
             static constexpr size_t READ_BUFFER_SIZE = 1024;
-            static constexpr size_t WRITE_BUFFER_SIZE = 10;
+            static constexpr size_t WRITE_BUFFER_SIZE = 1024;
 
             char m_read_buffer[READ_BUFFER_SIZE];
             char m_write_buffer[WRITE_BUFFER_SIZE];
